@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Trang chủ</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="container">
+        <div class="hero-card">
+            <h1>Trang chủ UTEShop</h1>
+            <p th:if="${#authorization.expression('isAuthenticated()')}">
+                Xin chào <strong th:text="${#authentication.principal.fullName}">User</strong>,
+                rất vui được gặp lại bạn!
+            </p>
+            <p th:unless="${#authorization.expression('isAuthenticated()')}">
+                Chào mừng bạn đến UTEShop — vui lòng <a th:href="@{/login}">đăng nhập</a>
+                hoặc <a th:href="@{/register}">đăng ký</a> để mua hàng.
+            </p>
+        </div>
+
+        <h2 class="section-title">Danh mục</h2>
+        <div class="category-chips">
+            <a th:each="c : ${categories}"
+               th:href="@{/products(categoryId=${c.id})}"
+               class="chip" th:text="${c.name}">Áo</a>
+        </div>
+
+        <h2 class="section-title">Sản phẩm nổi bật</h2>
+        <div class="product-grid">
+            <a th:each="p : ${featuredProducts}"
+               th:href="@{/products/{id}(id=${p.id})}"
+               class="product-card">
+                <img th:src="${p.imageUrl}" alt="product">
+                <div class="product-card-body">
+                    <div class="product-name" th:text="${p.name}">Tên sản phẩm</div>
+                    <div class="product-price" th:text="${#numbers.formatInteger(p.price, 0, 'POINT')} + ' đ'">0 đ</div>
+                </div>
+            </a>
+        </div>
+        <p><a th:href="@{/products}" class="btn-link">Xem tất cả sản phẩm &rarr;</a></p>
+    </div>
+</main>
+</body>
+</html>

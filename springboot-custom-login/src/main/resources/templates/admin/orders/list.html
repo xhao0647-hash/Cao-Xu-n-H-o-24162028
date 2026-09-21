@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout}">
+<head>
+    <title>Quản lý đơn hàng</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <h1>Quản lý đơn hàng</h1>
+
+    <form th:action="@{/admin/orders}" method="get" class="filter-bar">
+        <select name="status" onchange="this.form.submit()">
+            <option value="">-- Tất cả trạng thái --</option>
+            <option th:each="s : ${statuses}" th:value="${s}" th:selected="${status == s}" th:text="${s}">PENDING</option>
+        </select>
+    </form>
+
+    <table class="data-table">
+        <thead>
+        <tr>
+            <th>Mã đơn</th>
+            <th>Khách hàng</th>
+            <th>Ngày đặt</th>
+            <th>Tổng tiền</th>
+            <th>Trạng thái</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="o : ${orders.content}">
+            <td th:text="${o.orderCode}">DH123</td>
+            <td th:text="${o.receiverName}">Tên khách</td>
+            <td th:text="${#temporals.format(o.createdAt, 'dd/MM/yyyy HH:mm')}">01/01/2026</td>
+            <td th:text="${#numbers.formatInteger(o.totalAmount, 0, 'POINT')} + ' đ'">0 đ</td>
+            <td><span class="status-badge" th:classappend="${'status-' + o.status}" th:text="${o.status}">PENDING</span></td>
+            <td><a th:href="@{/admin/orders/{id}(id=${o.id})}" class="btn-small">Chi tiết</a></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="pagination" th:if="${orders.totalPages > 1}">
+        <a th:each="i : ${#numbers.sequence(0, orders.totalPages - 1)}"
+           th:href="@{/admin/orders(page=${i}, status=${status})}"
+           th:text="${i + 1}"
+           th:classappend="${i == orders.number} ? 'active' : ''"
+           class="page-link">1</a>
+    </div>
+</main>
+</body>
+</html>

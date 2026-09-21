@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Thanh toán</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="container">
+        <h1>Thanh toán</h1>
+
+        <div class="checkout-layout">
+            <form th:action="@{/checkout/place}" method="post" class="checkout-form">
+                <div class="field">
+                    <label>Người nhận</label>
+                    <input type="text" name="receiverName" th:value="${user.fullName}" required>
+                </div>
+                <div class="field">
+                    <label>Số điện thoại</label>
+                    <input type="text" name="phone" th:value="${user.phone}" required>
+                </div>
+                <div class="field">
+                    <label>Địa chỉ giao hàng</label>
+                    <textarea name="address" required th:text="${user.defaultAddress}"></textarea>
+                </div>
+                <div class="field">
+                    <label>Phương thức thanh toán</label>
+                    <select name="paymentMethod">
+                        <option value="COD">Thanh toán khi nhận hàng (COD)</option>
+                        <option value="BANK_TRANSFER">Chuyển khoản ngân hàng</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Ghi chú</label>
+                    <textarea name="note" placeholder="Ghi chú cho đơn hàng (không bắt buộc)"></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary">Xác nhận đặt hàng</button>
+            </form>
+
+            <div class="checkout-summary">
+                <h3>Đơn hàng của bạn</h3>
+                <div class="checkout-item" th:each="item : ${items}">
+                    <span th:text="${item.product.name} + ' x' + ${item.quantity}">Sản phẩm x1</span>
+                    <span th:text="${#numbers.formatInteger(item.product.price * item.quantity, 0, 'POINT')} + ' đ'">0 đ</span>
+                </div>
+                <div class="checkout-total">
+                    Tổng cộng: <strong th:text="${#numbers.formatInteger(total, 0, 'POINT')} + ' đ'">0 đ</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

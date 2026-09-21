@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title th:text="${product.name}">Chi tiết sản phẩm</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="container">
+        <div class="product-detail">
+            <img th:src="${product.imageUrl}" alt="product" class="product-detail-img">
+
+            <div class="product-detail-info">
+                <h1 th:text="${product.name}">Tên sản phẩm</h1>
+                <div class="product-detail-price" th:text="${#numbers.formatInteger(product.price, 0, 'POINT')} + ' đ'">0 đ</div>
+                <div class="product-detail-stock"
+                     th:text="${product.stock > 0 ? 'Còn ' + product.stock + ' sản phẩm' : 'Hết hàng'}">Còn hàng</div>
+                <p class="product-detail-desc" th:text="${product.description}">Mô tả sản phẩm</p>
+
+                <form th:action="@{/cart/add}" method="post" th:if="${product.stock > 0}">
+                    <input type="hidden" name="productId" th:value="${product.id}">
+
+                    <div class="field" th:if="${product.sizeOptions != null and !#strings.isEmpty(product.sizeOptions)}">
+                        <label>Size</label>
+                        <select name="size">
+                            <option th:each="s : ${#strings.arraySplit(product.sizeOptions, ',')}"
+                                    th:value="${s}" th:text="${s}">S</option>
+                        </select>
+                    </div>
+
+                    <div class="field" th:if="${product.colorOptions != null and !#strings.isEmpty(product.colorOptions)}">
+                        <label>Màu sắc</label>
+                        <select name="color">
+                            <option th:each="c : ${#strings.arraySplit(product.colorOptions, ',')}"
+                                    th:value="${c}" th:text="${c}">Đen</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>Số lượng</label>
+                        <input type="number" name="quantity" value="1" min="1" th:max="${product.stock}">
+                    </div>
+
+                    <button type="submit" class="btn-primary btn-add-cart"
+                            th:if="${#authorization.expression('isAuthenticated()')}">
+                        Thêm vào giỏ hàng
+                    </button>
+                    <a th:href="@{/login}" class="btn-primary btn-add-cart"
+                       th:unless="${#authorization.expression('isAuthenticated()')}">
+                        Đăng nhập để mua hàng
+                    </a>
+                </form>
+                <p th:unless="${product.stock > 0}" class="alert error">Sản phẩm tạm thời hết hàng.</p>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

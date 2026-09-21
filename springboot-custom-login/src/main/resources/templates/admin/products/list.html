@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout}">
+<head>
+    <title>Quản lý sản phẩm</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="admin-header-row">
+        <h1>Quản lý sản phẩm</h1>
+        <a th:href="@{/admin/products/new}" class="btn-primary">+ Thêm sản phẩm</a>
+    </div>
+
+    <div class="alert success" th:if="${message}" th:text="${message}"></div>
+
+    <form th:action="@{/admin/products}" method="get" class="filter-bar">
+        <input type="text" name="keyword" th:value="${keyword}" placeholder="Tìm theo tên sản phẩm...">
+        <button type="submit" class="btn-primary">Tìm</button>
+    </form>
+
+    <table class="data-table">
+        <thead>
+        <tr>
+            <th>Ảnh</th>
+            <th>Tên</th>
+            <th>Danh mục</th>
+            <th>Giá</th>
+            <th>Tồn kho</th>
+            <th>Trạng thái</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${products.content}">
+            <td><img th:src="${p.imageUrl}" class="thumb" alt="product"></td>
+            <td th:text="${p.name}">Tên sản phẩm</td>
+            <td th:text="${p.category.name}">Danh mục</td>
+            <td th:text="${#numbers.formatInteger(p.price, 0, 'POINT')} + ' đ'">0 đ</td>
+            <td th:text="${p.stock}">0</td>
+            <td>
+                <span class="status-badge" th:classappend="${p.active} ? 'status-COMPLETED' : 'status-CANCELLED'"
+                      th:text="${p.active} ? 'Đang bán' : 'Đã ẩn'">Đang bán</span>
+            </td>
+            <td>
+                <a th:href="@{/admin/products/{id}/edit(id=${p.id})}" class="btn-small">Sửa</a>
+                <form th:action="@{/admin/products/{id}/delete(id=${p.id})}" method="post" style="display:inline"
+                      onsubmit="return confirm('Ẩn sản phẩm này khỏi shop?');">
+                    <button type="submit" class="btn-small btn-danger">Ẩn</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="pagination" th:if="${products.totalPages > 1}">
+        <a th:each="i : ${#numbers.sequence(0, products.totalPages - 1)}"
+           th:href="@{/admin/products(page=${i}, keyword=${keyword})}"
+           th:text="${i + 1}"
+           th:classappend="${i == products.number} ? 'active' : ''"
+           class="page-link">1</a>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout}">
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <h1>Bảng điều khiển</h1>
+
+    <div class="stat-grid">
+        <div class="stat-card">
+            <div class="stat-label">Đơn chờ xử lý</div>
+            <div class="stat-value" th:text="${pendingCount}">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Đơn hôm nay</div>
+            <div class="stat-value" th:text="${ordersToday}">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Doanh thu hôm nay</div>
+            <div class="stat-value" th:text="${#numbers.formatInteger(revenueToday, 0, 'POINT')} + ' đ'">0 đ</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Doanh thu tháng này</div>
+            <div class="stat-value" th:text="${#numbers.formatInteger(revenueMonth, 0, 'POINT')} + ' đ'">0 đ</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Tổng số sản phẩm</div>
+            <div class="stat-value" th:text="${totalProducts}">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Tổng số người dùng</div>
+            <div class="stat-value" th:text="${totalUsers}">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Tổng số đơn hàng</div>
+            <div class="stat-value" th:text="${totalOrders}">0</div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

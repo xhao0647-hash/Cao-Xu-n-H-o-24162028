@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Hồ sơ cá nhân</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="container">
+        <h1>Hồ sơ cá nhân</h1>
+
+        <div class="alert success" th:if="${message}" th:text="${message}"></div>
+
+        <form th:action="@{/account/profile}" method="post" enctype="multipart/form-data" class="profile-form">
+            <div class="profile-avatar-row">
+                <img th:src="${user.images}" alt="avatar" class="profile-avatar">
+                <div class="field">
+                    <label>Đổi ảnh đại diện</label>
+                    <input type="file" name="avatar" accept="image/*">
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Username</label>
+                <input type="text" th:value="${user.username}" disabled>
+            </div>
+            <div class="field">
+                <label>Email</label>
+                <input type="text" th:value="${user.email}" disabled>
+            </div>
+            <div class="field">
+                <label>Họ tên</label>
+                <input type="text" name="fullName" th:value="${user.fullName}" required>
+            </div>
+            <div class="field">
+                <label>Số điện thoại</label>
+                <input type="text" name="phone" th:value="${user.phone}">
+            </div>
+            <div class="field">
+                <label>Địa chỉ giao hàng mặc định</label>
+                <textarea name="defaultAddress" th:text="${user.defaultAddress}"></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary">Lưu thay đổi</button>
+        </form>
+    </div>
+</main>
+</body>
+</html>

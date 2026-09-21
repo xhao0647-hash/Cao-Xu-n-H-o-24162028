@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mật khẩu tạm thời - UTEShop</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="auth-page">
+
+<div class="auth-card">
+    <div class="logo">UTEShop</div>
+    <h2>Mật khẩu tạm thời của bạn</h2>
+
+    <div class="alert success">
+        Tài khoản: <strong th:text="${username}">user01</strong><br>
+        Mật khẩu tạm thời: <strong th:text="${tempPassword}">Ab12Cd34Ef</strong>
+    </div>
+    <p class="demo-hint">
+        Đây là bản demo nên mật khẩu tạm được hiển thị trực tiếp thay vì gửi qua email.
+        Vui lòng đăng nhập rồi đổi lại mật khẩu dễ nhớ hơn.
+    </p>
+
+    <a th:href="@{/login}" class="btn-primary" style="display:block; text-align:center; text-decoration:none;">Đăng nhập ngay</a>
+</div>
+
+</body>
+</html>

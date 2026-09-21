@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Đăng nhập - UTEShop</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="auth-page">
+
+<div class="auth-card">
+    <div class="logo">UTEShop</div>
+    <h2>Đăng nhập vào tài khoản của bạn</h2>
+
+    <div class="alert error" th:if="${param.error}">
+        Username/email hoặc mật khẩu không đúng.
+    </div>
+    <div class="alert success" th:if="${param.logout}">
+        Bạn đã đăng xuất thành công.
+    </div>
+    <div class="alert success" th:if="${param.registered}">
+        Đăng ký thành công! Vui lòng đăng nhập.
+    </div>
+
+    <form th:action="@{/login}" method="post">
+        <div class="field">
+            <label for="login">Username hoặc Email</label>
+            <input id="login" type="text" name="login" placeholder="username hoặc email@gmail.com" required autofocus>
+        </div>
+
+        <div class="field">
+            <label for="password">Mật khẩu</label>
+            <input id="password" type="password" name="password" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" class="btn-primary">Đăng nhập</button>
+    </form>
+
+    <div class="demo-hint">
+        <a th:href="@{/forgot-password}">Quên mật khẩu?</a> ·
+        Chưa có tài khoản? <a th:href="@{/register}">Đăng ký</a>
+    </div>
+
+    <div class="demo-hint">
+        Tài khoản demo: <strong>user01</strong> / <strong>123456</strong>
+        (hoặc <strong>user01@gmail.com</strong> / <strong>123456</strong>)<br>
+        Tài khoản admin: <strong>admin01</strong> / <strong>123456</strong>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Đặt hàng thành công</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="container">
+        <div class="hero-card">
+            <h1>Đặt hàng thành công!</h1>
+            <p>Mã đơn hàng của bạn: <strong th:text="${order.orderCode}">DH12345678</strong></p>
+            <p>Tổng tiền: <strong th:text="${#numbers.formatInteger(order.totalAmount, 0, 'POINT')} + ' đ'">0 đ</strong></p>
+            <p>Chúng tôi sẽ liên hệ qua số điện thoại <strong th:text="${order.phone}">-</strong> để xác nhận giao hàng.</p>
+            <p>
+                <a th:href="@{/account/orders/{id}(id=${order.id})}" class="btn-primary">Xem chi tiết đơn hàng</a>
+                <a th:href="@{/products}" class="btn-link">Tiếp tục mua sắm</a>
+            </p>
+        </div>
+    </div>
+</main>
+</body>
+</html>

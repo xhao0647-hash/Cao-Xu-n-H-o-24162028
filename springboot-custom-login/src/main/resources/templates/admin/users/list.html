@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout}">
+<head>
+    <title>Quản lý người dùng</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <h1>Quản lý người dùng</h1>
+
+    <div class="alert success" th:if="${message}" th:text="${message}"></div>
+
+    <table class="data-table">
+        <thead>
+        <tr>
+            <th>Avatar</th>
+            <th>Username</th>
+            <th>Họ tên</th>
+            <th>Email</th>
+            <th>SĐT</th>
+            <th>Vai trò</th>
+            <th>Trạng thái</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="u : ${users}">
+            <td><img th:src="${u.images}" class="thumb" alt="avatar"></td>
+            <td th:text="${u.username}">username</td>
+            <td th:text="${u.fullName}">Họ tên</td>
+            <td th:text="${u.email}">email</td>
+            <td th:text="${u.phone}">-</td>
+            <td th:text="${u.role.name}">USER</td>
+            <td>
+                <span class="status-badge" th:classappend="${u.enabled} ? 'status-COMPLETED' : 'status-CANCELLED'"
+                      th:text="${u.enabled} ? 'Hoạt động' : 'Đã khoá'">Hoạt động</span>
+            </td>
+            <td>
+                <form th:action="@{/admin/users/{id}/toggle(id=${u.id})}" method="post" style="display:inline">
+                    <button type="submit" class="btn-small" th:text="${u.enabled} ? 'Khoá' : 'Mở khoá'">Khoá</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

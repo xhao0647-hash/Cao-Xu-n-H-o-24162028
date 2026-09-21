@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="header" class="topbar">
+    <div class="brand">
+        <a th:href="@{/}">UTEShop</a>
+    </div>
+
+    <nav class="main-nav">
+        <a th:href="@{/}">Trang chủ</a>
+        <a th:href="@{/products}">Sản phẩm</a>
+        <a th:href="@{/cart}" th:if="${#authorization.expression('isAuthenticated()')}">Giỏ hàng</a>
+        <a th:href="@{/account/orders}" th:if="${#authorization.expression('isAuthenticated()')}">Đơn hàng của tôi</a>
+        <a th:href="@{/admin}" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">Quản trị</a>
+    </nav>
+
+    <div class="account" th:if="${#authorization.expression('isAuthenticated()')}">
+        <img class="avatar"
+             th:src="${#authentication.principal.images != null and !#strings.isEmpty(#authentication.principal.images)
+                       ? #authentication.principal.images
+                       : '/images/avatar-default.png'}"
+             alt="Avatar">
+
+        <div class="account-info">
+            <span class="full-name">
+                <a th:href="@{/account/profile}" th:text="${#authentication.principal.fullName}">Nguyễn Văn A</a>
+                <span class="role-badge" th:text="${#authentication.principal.role}">ROLE_USER</span>
+            </span>
+            <span class="sub" th:text="${#authentication.principal.username} + ' · ' + ${#authentication.principal.email}">
+                nguyenvana · email@gmail.com
+            </span>
+        </div>
+
+        <form th:action="@{/logout}" method="post" style="display:inline">
+            <button type="submit" class="logout-btn">Đăng xuất</button>
+        </form>
+    </div>
+
+    <div th:unless="${#authorization.expression('isAuthenticated()')}" class="auth-links">
+        <a th:href="@{/login}" class="login-link">Đăng nhập</a>
+        <a th:href="@{/register}" class="login-link">Đăng ký</a>
+    </div>
+</header>
+</body>
+</html>

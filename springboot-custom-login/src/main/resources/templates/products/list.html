@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Sản phẩm</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="container">
+        <h1>Sản phẩm</h1>
+
+        <form th:action="@{/products}" method="get" class="filter-bar">
+            <input type="text" name="keyword" th:value="${keyword}" placeholder="Tìm sản phẩm...">
+
+            <select name="categoryId">
+                <option value="">-- Tất cả danh mục --</option>
+                <option th:each="c : ${categories}"
+                        th:value="${c.id}"
+                        th:selected="${categoryId != null and categoryId == c.id}"
+                        th:text="${c.name}">Áo</option>
+            </select>
+
+            <input type="number" name="minPrice" th:value="${minPrice}" placeholder="Giá từ" min="0">
+            <input type="number" name="maxPrice" th:value="${maxPrice}" placeholder="Giá đến" min="0">
+
+            <button type="submit" class="btn-primary">Lọc</button>
+        </form>
+
+        <div class="product-grid" th:if="${products.content.size() > 0}">
+            <a th:each="p : ${products.content}"
+               th:href="@{/products/{id}(id=${p.id})}"
+               class="product-card">
+                <img th:src="${p.imageUrl}" alt="product">
+                <div class="product-card-body">
+                    <div class="product-name" th:text="${p.name}">Tên sản phẩm</div>
+                    <div class="product-price" th:text="${#numbers.formatInteger(p.price, 0, 'POINT')} + ' đ'">0 đ</div>
+                    <div class="product-stock" th:text="${p.stock > 0 ? 'Còn hàng' : 'Hết hàng'}">Còn hàng</div>
+                </div>
+            </a>
+        </div>
+        <p th:if="${products.content.size() == 0}">Không tìm thấy sản phẩm phù hợp.</p>
+
+        <div class="pagination" th:if="${products.totalPages > 1}">
+            <a th:each="i : ${#numbers.sequence(0, products.totalPages - 1)}"
+               th:href="@{/products(page=${i}, categoryId=${categoryId}, keyword=${keyword}, minPrice=${minPrice}, maxPrice=${maxPrice})}"
+               th:text="${i + 1}"
+               th:classappend="${i == products.number} ? 'active' : ''"
+               class="page-link">1</a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

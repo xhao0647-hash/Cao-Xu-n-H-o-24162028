@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Giỏ hàng</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="container">
+        <h1>Giỏ hàng của bạn</h1>
+
+        <div class="alert success" th:if="${message}" th:text="${message}"></div>
+
+        <div th:if="${items.size() == 0}">
+            <p>Giỏ hàng đang trống. <a th:href="@{/products}">Tiếp tục mua sắm</a></p>
+        </div>
+
+        <table class="data-table" th:if="${items.size() > 0}">
+            <thead>
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Phân loại</th>
+                <th>Đơn giá</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${items}">
+                <td>
+                    <div class="cart-product">
+                        <img th:src="${item.product.imageUrl}" alt="product">
+                        <a th:href="@{/products/{id}(id=${item.product.id})}" th:text="${item.product.name}">Tên</a>
+                    </div>
+                </td>
+                <td>
+                    <span th:if="${item.size}" th:text="'Size: ' + ${item.size}">Size: M</span>
+                    <span th:if="${item.color}" th:text="' · Màu: ' + ${item.color}"> · Màu: Đen</span>
+                </td>
+                <td th:text="${#numbers.formatInteger(item.product.price, 0, 'POINT')} + ' đ'">0 đ</td>
+                <td>
+                    <form th:action="@{/cart/update}" method="post" class="qty-form">
+                        <input type="hidden" name="cartItemId" th:value="${item.id}">
+                        <input type="number" name="quantity" th:value="${item.quantity}" min="1" style="width:64px">
+                        <button type="submit" class="btn-small">Cập nhật</button>
+                    </form>
+                </td>
+                <td th:text="${#numbers.formatInteger(item.product.price * item.quantity, 0, 'POINT')} + ' đ'">0 đ</td>
+                <td>
+                    <form th:action="@{/cart/remove}" method="post">
+                        <input type="hidden" name="cartItemId" th:value="${item.id}">
+                        <button type="submit" class="btn-small btn-danger">Xoá</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="cart-summary" th:if="${items.size() > 0}">
+            <div class="cart-total">Tổng cộng: <strong th:text="${#numbers.formatInteger(total, 0, 'POINT')} + ' đ'">0 đ</strong></div>
+            <a th:href="@{/checkout}" class="btn-primary">Tiến hành thanh toán</a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

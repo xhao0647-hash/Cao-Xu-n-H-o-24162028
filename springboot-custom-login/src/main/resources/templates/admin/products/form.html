@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout}">
+<head>
+    <title th:text="${product.id} != null ? 'Sửa sản phẩm' : 'Thêm sản phẩm'">Thêm sản phẩm</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <h1 th:text="${product.id} != null ? 'Sửa sản phẩm' : 'Thêm sản phẩm mới'">Thêm sản phẩm</h1>
+
+    <form th:action="@{/admin/products/save}" method="post" enctype="multipart/form-data" class="profile-form">
+        <input type="hidden" name="id" th:value="${product.id}">
+
+        <div class="field" th:if="${product.imageUrl}">
+            <label>Ảnh hiện tại</label>
+            <img th:src="${product.imageUrl}" class="thumb-lg" alt="product">
+        </div>
+        <div class="field">
+            <label>Ảnh sản phẩm (để trống nếu giữ ảnh cũ)</label>
+            <input type="file" name="imageFile" accept="image/*">
+        </div>
+
+        <div class="field">
+            <label>Tên sản phẩm</label>
+            <input type="text" name="name" th:value="${product.name}" required>
+        </div>
+        <div class="field">
+            <label>Mô tả</label>
+            <textarea name="description" rows="4" th:text="${product.description}"></textarea>
+        </div>
+        <div class="field">
+            <label>Giá (đ)</label>
+            <input type="number" name="price" th:value="${product.price}" min="0" required>
+        </div>
+        <div class="field">
+            <label>Tồn kho</label>
+            <input type="number" name="stock" th:value="${product.stock}" min="0" required>
+        </div>
+        <div class="field">
+            <label>Danh mục</label>
+            <select name="categoryId" required>
+                <option th:each="c : ${categories}"
+                        th:value="${c.id}"
+                        th:selected="${product.category != null and product.category.id == c.id}"
+                        th:text="${c.name}">Áo</option>
+            </select>
+        </div>
+        <div class="field">
+            <label>Size (cách nhau bởi dấu phẩy)</label>
+            <input type="text" name="sizeOptions" th:value="${product.sizeOptions}" placeholder="S,M,L,XL">
+        </div>
+        <div class="field">
+            <label>Màu sắc (cách nhau bởi dấu phẩy)</label>
+            <input type="text" name="colorOptions" th:value="${product.colorOptions}" placeholder="Đen,Trắng">
+        </div>
+        <div class="field">
+            <label>
+                <input type="checkbox" name="active" value="true" th:checked="${product.id == null or product.active}" style="width:auto">
+                <input type="hidden" name="active" value="false">
+                Đang bán (hiển thị cho khách hàng)
+            </label>
+        </div>
+
+        <button type="submit" class="btn-primary">Lưu sản phẩm</button>
+    </form>
+</main>
+</body>
+</html>

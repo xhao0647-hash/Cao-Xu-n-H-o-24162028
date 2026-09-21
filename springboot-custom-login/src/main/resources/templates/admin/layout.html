@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title layout:title-pattern="$CONTENT_TITLE - UTEShop Admin">UTEShop Admin</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="admin-body">
+
+<header th:replace="~{fragments/header :: header}"></header>
+
+<div class="admin-shell">
+    <aside class="admin-sidebar">
+        <a th:href="@{/admin}">Dashboard</a>
+        <a th:href="@{/admin/products}">Sản phẩm</a>
+        <a th:href="@{/admin/categories}">Danh mục</a>
+        <a th:href="@{/admin/orders}">Đơn hàng</a>
+        <a th:href="@{/admin/users}">Người dùng</a>
+    </aside>
+
+    <main class="admin-content" layout:fragment="content"></main>
+</div>
+
+</body>
+</html>

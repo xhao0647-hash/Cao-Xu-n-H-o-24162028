@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout}">
+<head>
+    <title>Quản lý danh mục</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <h1>Quản lý danh mục</h1>
+
+    <div class="alert success" th:if="${message}" th:text="${message}"></div>
+    <div class="alert error" th:if="${error}" th:text="${error}"></div>
+
+    <form th:action="@{/admin/categories}" method="post" class="filter-bar">
+        <input type="text" name="name" placeholder="Tên danh mục mới..." required>
+        <button type="submit" class="btn-primary">+ Thêm danh mục</button>
+    </form>
+
+    <table class="data-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên danh mục</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${categories}">
+            <td th:text="${c.id}">1</td>
+            <td>
+                <form th:action="@{/admin/categories/{id}(id=${c.id})}" method="post" class="inline-edit-form">
+                    <input type="text" name="name" th:value="${c.name}" required>
+                    <button type="submit" class="btn-small">Lưu</button>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/admin/categories/{id}/delete(id=${c.id})}" method="post" style="display:inline"
+                      onsubmit="return confirm('Xoá danh mục này?');">
+                    <button type="submit" class="btn-small btn-danger">Xoá</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>
